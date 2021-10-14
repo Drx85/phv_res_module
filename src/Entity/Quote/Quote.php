@@ -35,7 +35,7 @@ class Quote
 	/**
 	 * @var string
 	 */
-	private $formattedTravelTimeInHours;
+	private $formattedTravelTime;
 	
 	/**
 	 * @return string
@@ -173,19 +173,19 @@ class Quote
 	/**
 	 * @return string
 	 */
-	public function getFormattedTravelTimeInHours(): string
+	public function getFormattedTravelTime(): string
 	{
-		return $this->formattedTravelTimeInHours;
+		return $this->formattedTravelTime;
 	}
 	
 	/**
-	 * @param string $formattedTravelTimeInHours
+	 * @param string $formattedTravelTime
 	 *
 	 * @return Quote
 	 */
-	public function setFormattedTravelTimeInHours(string $formattedTravelTimeInHours): Quote
+	public function setFormattedTravelTime(string $formattedTravelTime): Quote
 	{
-		$this->formattedTravelTimeInHours = $formattedTravelTimeInHours;
+		$this->formattedTravelTime = $formattedTravelTime;
 		return $this;
 	}
 	

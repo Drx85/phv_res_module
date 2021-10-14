@@ -5,8 +5,8 @@ function initAutocomplete() {
 	origin = new google.maps.places.Autocomplete(
 		document.getElementById("origin"),
 		{
-			componentRestrictions: {'country': ['FR']},
-			fields: ['place_id', 'geometry', 'name']
+			componentRestrictions: {"country": ["FR"]},
+			fields: ["place_id", "geometry", "name"]
 		}
 	);
 	origin.addListener("place_changed", function (e) {
@@ -14,10 +14,10 @@ function initAutocomplete() {
 	});
 	
 	destination = new google.maps.places.Autocomplete(
-		document.getElementById('destination'),
+		document.getElementById("destination"),
 		{
-			componentRestrictions: {'country': ['FR']},
-			fields: ['place_id', 'geometry', 'name']
+			componentRestrictions: {"country": ['FR']},
+			fields: ["place_id", 'geometry', 'name']
 		}
 	);
 	destination.addListener("place_changed", onPlaceChanged);

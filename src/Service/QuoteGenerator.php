@@ -28,8 +28,8 @@ class QuoteGenerator
 	{
 		$travelDistanceInKm = $apiResponse['routes']['0']['legs']['0']['distance']['text'];
 		$timeInMinutes = ceil($apiResponse['routes']['0']['legs']['0']['duration']['value'] / 60);
-		$formattedTimeInHours = $this->convertMinutesToFormattedHours($timeInMinutes);
-		$price = $this->calculPrice(intval($travelDistanceInKm), intval($timeInMinutes));
+		$formattedTime = $this->convertMinutesToFormattedHours($timeInMinutes);
+		$price = $this->calculPrice((int) $travelDistanceInKm, (int) $timeInMinutes);
 		$quote = new Quote();
 		return $quote->setOriginAddress($apiResponse['routes']['0']['legs']['0']['start_address'])
 			->setOriginLatitude($apiResponse['routes']['0']['legs']['0']['start_location']['lat'])
@@ -37,8 +37,8 @@ class QuoteGenerator
 			->setDestinationAddress($apiResponse['routes']['0']['legs']['0']['end_address'])
 			->setDestinationLatitude($apiResponse['routes']['0']['legs']['0']['start_location']['lat'])
 			->setDestinationLongitude($apiResponse['routes']['0']['legs']['0']['start_location']['lng'])
-			->setTravelDistanceInKms(intval($travelDistanceInKm))
-			->setFormattedTravelTimeInHours($formattedTimeInHours)
+			->setTravelDistanceInKms((int) $travelDistanceInKm)
+			->setFormattedTravelTime($formattedTime)
 			->setPrice($price);
 	}
 	
