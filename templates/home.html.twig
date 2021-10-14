@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block body %}
+	<h1>Demande de devis</h1>
+	{% for message in app.flashes('warning') %}
+		<div class="alert alert-warning">
+			{{ message }}
+		</div>
+	{% endfor %}
 	<input id="origin" placeholder="Entrez un lieu de départ" type="text"/>
 	<input disabled id="destination" placeholder="Entrez une destination" type="text"/>
 	<div id="validate"></div>
@@ -12,7 +18,7 @@
 
 {% block javascripts %}
 	<script async
-			src="https://maps.googleapis.com/maps/api/js?key={{ google_key }}&libraries=places&callback=initAutocomplete"> //WARNING API KEY!!!!
+			src="https://maps.googleapis.com/maps/api/js?key={{ google_key }}&libraries=places&callback=initAutocomplete">
 	</script>
 	<script src="{{ asset('js/autocomplete.js') }}"></script>
 {% endblock %}
