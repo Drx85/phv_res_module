@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Quote\Quote;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class QuoteGenerator
 {
@@ -10,26 +12,58 @@ class QuoteGenerator
 	private int $priceOfCare;
 	private float $pricePerKm;
 	private float $pricePerMinute;
+	private SessionInterface $session;
+	private HttpClientInterface $client;
 	
-	public function __construct(int $minimumOrderPrice, int $priceOfCare, float $pricePerKm, float $pricePerMinute)
+	public function __construct(int                 $minimumOrderPrice,
+								int                 $priceOfCare,
+								float               $pricePerKm,
+								float               $pricePerMinute,
+								SessionInterface    $session,
+								HttpClientInterface $client)
 	{
 		$this->minimumOrderPrice = $minimumOrderPrice;
 		$this->priceOfCare = $priceOfCare;
 		$this->pricePerKm = $pricePerKm;
 		$this->pricePerMinute = $pricePerMinute;
+		$this->session = $session;
+		$this->client = $client;
 	}
-
+	
+	public function generate(string $origin, string $destination, string $googleApiKey): Quote
+	{
+		$quote = $this->createQuote($this->callGoogleApi($origin, $destination, $googleApiKey));
+		$this->session->set('quote', $quote);
+		return $quote;
+	}
+	
+	private function callGoogleApi(string $origin, string $destination, string $googleApiKey): array
+	{
+		$apiReponse = $this->client->request(
+			'GET',
+			'https://maps.googleapis.com/maps/api/directions/json', [
+				'query' => [
+					'origin'      => 'place_id:' . $origin,
+					'destination' => 'place_id:' . $destination,
+					'key'         => $googleApiKey
+				]
+			]
+		);
+		//		$statusCode = $apiResponse->getStatusCode();
+		return $apiReponse->toArray();
+	}
+	
 	/**
 	 * @param array $apiResponse
 	 *
 	 * @return Quote
 	 */
-	public function generate(array $apiResponse): Quote
+	private function createQuote(array $apiResponse): Quote
 	{
 		$travelDistanceInKm = $apiResponse['routes']['0']['legs']['0']['distance']['text'];
 		$timeInMinutes = ceil($apiResponse['routes']['0']['legs']['0']['duration']['value'] / 60);
 		$formattedTime = $this->convertMinutesToFormattedHours($timeInMinutes);
-		$price = $this->calculPrice((int) $travelDistanceInKm, (int) $timeInMinutes);
+		$price = $this->calculPrice((int)$travelDistanceInKm, (int)$timeInMinutes);
 		$quote = new Quote();
 		return $quote->setOriginAddress($apiResponse['routes']['0']['legs']['0']['start_address'])
 			->setOriginLatitude($apiResponse['routes']['0']['legs']['0']['start_location']['lat'])
@@ -37,7 +71,7 @@ class QuoteGenerator
 			->setDestinationAddress($apiResponse['routes']['0']['legs']['0']['end_address'])
 			->setDestinationLatitude($apiResponse['routes']['0']['legs']['0']['start_location']['lat'])
 			->setDestinationLongitude($apiResponse['routes']['0']['legs']['0']['start_location']['lng'])
-			->setTravelDistanceInKms((int) $travelDistanceInKm)
+			->setTravelDistanceInKms((int)$travelDistanceInKm)
 			->setFormattedTravelTime($formattedTime)
 			->setPrice($price);
 	}

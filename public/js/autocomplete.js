@@ -17,7 +17,7 @@ function initAutocomplete() {
 		document.getElementById("destination"),
 		{
 			componentRestrictions: {"country": ['FR']},
-			fields: ["place_id", 'geometry', 'name']
+			fields: ["place_id", "geometry", "name"]
 		}
 	);
 	destination.addListener("place_changed", onPlaceChanged);
