@@ -2,23 +2,23 @@ window.onload = () => {
 	paypal.Buttons({
 		// Sets up the transaction when a payment button is clicked
 		createOrder: function () {
-			return fetch('/create-paypal-transaction', {
-				method: 'post',
+			return fetch("/create-paypal-transaction", {
+				method: "post",
 				headers: {
-					'content-type': 'application/json'
+					"content-type": "application/json"
 				}
 			}).then(function(res) {
 				return res.json();
 			}).then(function(data) {
-				return data.res.result.id; // Use the key sent by your server's response, ex. 'id' or 'token'
+				return data.res.result.id;
 			});
 		},
 		// Finalize the transaction after payer approval
 		onApprove: function(data) {
-			return fetch('/capture-paypal-transaction', {
-				method: 'post',
+			return fetch("/capture-paypal-transaction", {
+				method: "post",
 				headers: {
-					'content-type': 'application/json'
+					"content-type": "application/json"
 				},
 				body: JSON.stringify({
 					orderID: data.orderID
@@ -26,8 +26,8 @@ window.onload = () => {
 			}).then(function(res) {
 				return res.json();
 			}).then(function(details) {
-				alert('Transaction funds captured from ' + details.payer_given_name);
-			})
+				alert("Transaction funds captured");
+			});
 		}
-	}).render('#paypal-button-container');
-}
+	}).render("#paypal-button-container");
+};
