@@ -20,6 +20,12 @@
     "nikic/php-parser": {
         "version": "v4.13.0"
     },
+    "paypal/paypal-checkout-sdk": {
+        "version": "1.0.1"
+    },
+    "paypal/paypalhttp": {
+        "version": "1.0.0"
+    },
     "psr/cache": {
         "version": "2.0.0"
     },

@@ -21,11 +21,15 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
-    App\Service\QuoteGenerator:
+    App\Service\Quote\QuoteGenerator:
         arguments:
             $minimumOrderPrice: '%env(MINIMUM_ORDER_PRICE)%'
             $priceOfCare: '%env(PRICE_OF_CARE)%'
             $pricePerKm: '%env(PRICE_PER_KM)%'
             $pricePerMinute: '%env(PRICE_PER_MINUTE)%'
+    App\Service\Payment\PayPalClient:
+        arguments:
+           $paypalId: '%env(PAYPAL_ID)%'
+           $paypalSecret: '%env(PAYPAL_SECRET)%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

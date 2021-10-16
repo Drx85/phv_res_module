@@ -23,16 +23,18 @@
 	<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_id }}&currency=EUR" data-sdk-integration-source="button-factory"></script>
 	<script>
 		window.onload = () => {
-			console.log(document.getElementById('price').innerText)
 			paypal.Buttons({
 				// Sets up the transaction when a payment button is clicked
-				createOrder: function (data, actions) {
-					return actions.order.create({
-						purchase_units: [{
-							amount: {
-								value: document.getElementById('price').innerText
-							}
-						}]
+				createOrder: function () {
+					return fetch('/quote/payment', {
+						method: 'post',
+						headers: {
+							'content-type': 'application/json'
+						}
+					}).then(function(res) {
+						return res.json();
+					}).then(function(data) {
+						return data.res.result.id; // Use the key sent by your server's response, ex. 'id' or 'token'
 					});
 				},
 				// Finalize the transaction after payer approval

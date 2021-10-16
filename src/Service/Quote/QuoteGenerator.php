@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Quote;
 
 use App\Entity\Quote\Quote;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -30,6 +30,13 @@ class QuoteGenerator
 		$this->client = $client;
 	}
 	
+	/**
+	 * @param string $origin
+	 * @param string $destination
+	 * @param string $googleApiKey
+	 *
+	 * @return Quote
+	 */
 	public function generate(string $origin, string $destination, string $googleApiKey): Quote
 	{
 		$quote = $this->createQuote($this->callGoogleApi($origin, $destination, $googleApiKey));
@@ -63,7 +70,7 @@ class QuoteGenerator
 		$travelDistanceInKm = $apiResponse['routes']['0']['legs']['0']['distance']['text'];
 		$timeInMinutes = ceil($apiResponse['routes']['0']['legs']['0']['duration']['value'] / 60);
 		$formattedTime = $this->convertMinutesToFormattedHours($timeInMinutes);
-		$price = $this->calculPrice((int)$travelDistanceInKm, (int)$timeInMinutes);
+		$price = $this->calculatePrice((int)$travelDistanceInKm, (int)$timeInMinutes);
 		$quote = new Quote();
 		return $quote->setOriginAddress($apiResponse['routes']['0']['legs']['0']['start_address'])
 			->setOriginLatitude($apiResponse['routes']['0']['legs']['0']['start_location']['lat'])
@@ -106,7 +113,7 @@ class QuoteGenerator
 	 *
 	 * @return float|int
 	 */
-	private function calculPrice(int $travelDistanceInKm, int $timeInMinutes)
+	private function calculatePrice(int $travelDistanceInKm, int $timeInMinutes): float|int
 	{
 		$price = $this->pricePerKm * $travelDistanceInKm + $this->pricePerMinute * $timeInMinutes + $this->priceOfCare;
 		if ($price < $this->minimumOrderPrice) return $this->minimumOrderPrice;
