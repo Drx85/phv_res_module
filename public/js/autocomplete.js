@@ -3,36 +3,30 @@ let destination;
 
 function initAutocomplete() {
 	origin = new google.maps.places.Autocomplete(
-		document.getElementById("origin"),
+		document.getElementById("ask_quote_origin"),
 		{
 			componentRestrictions: {"country": ["FR"]},
 			fields: ["place_id", "geometry", "name"]
 		}
 	);
 	origin.addListener("place_changed", function (e) {
-		document.getElementById("destination").disabled = false;
+		if (typeof origin.getPlace() !== "undefined") {
+			let originPlace = origin.getPlace();
+			document.getElementById("ask_quote_originPlaceId").value = originPlace.place_id;
+		}
 	});
 	
 	destination = new google.maps.places.Autocomplete(
-		document.getElementById("destination"),
+		document.getElementById("ask_quote_destination"),
 		{
 			componentRestrictions: {"country": ['FR']},
 			fields: ["place_id", "geometry", "name"]
 		}
 	);
-	destination.addListener("place_changed", onPlaceChanged);
-}
-
-function onPlaceChanged() {
-	let originPlace = origin.getPlace();
-	let destinationPlace = destination.getPlace();
-	
-	if (!originPlace.geometry) {
-		document.getElementById("origin").placeholder = "Entrez un lieu de départ";
-	}
-	if (!destinationPlace.geometry) {
-		document.getElementById("destination").placeholder = "Entrez une destination";
-	} else {
-		document.getElementById("validate").innerHTML = '<a href="/quote/' + originPlace.place_id + '/' + destinationPlace.place_id + '">Valider</a>';
-	}
+	destination.addListener("place_changed", function (e) {
+		if (typeof destination.getPlace() !== "undefined") {
+			let destinationPlace = destination.getPlace();
+			document.getElementById("ask_quote_destinationPlaceId").value = destinationPlace.place_id;
+		}
+	});
 }

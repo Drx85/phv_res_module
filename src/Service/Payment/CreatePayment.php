@@ -30,7 +30,7 @@ class CreatePayment
 	
 	/**
 	 * Setting up the JSON request body for creating the order with minimum request body. The intent in the
-	 * request body should be "AUTHORIZE" for authorize intent flow.	 *
+	 * request body should be "AUTHORIZE" for authorize intent flow.
 	 */
 	#[ArrayShape(['intent' => "string", 'application_context' => "string[]", 'purchase_units' => "\array[][]"])]
 	private static function buildRequestBody(float $amount): array

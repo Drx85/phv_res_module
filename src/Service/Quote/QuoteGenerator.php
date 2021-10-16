@@ -40,7 +40,7 @@ class QuoteGenerator
 	public function generate(string $origin, string $destination, string $googleApiKey): Quote
 	{
 		$quote = $this->createQuote($this->callGoogleApi($origin, $destination, $googleApiKey));
-		$this->session->set('quote', $quote);
+		$this->session->set('quote', $quote); dd($this->session);
 		return $quote;
 	}
 	
