@@ -26,7 +26,7 @@ window.onload = () => {
 			}).then(function(res) {
 				return res.json();
 			}).then(function(details) {
-				alert("Transaction funds captured");
+				window.location.replace("/confirmation");
 			});
 		}
 	}).render("#paypal-button-container");

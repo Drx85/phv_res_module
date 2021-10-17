@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Quote\Prospect;
 use App\Form\AskQuoteType;
 use App\Service\Payment\CapturePayment;
 use App\Service\Payment\CreatePayment;
@@ -16,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class HomeController extends AbstractController
+class DefaultController extends AbstractController
 {
 	#[Route('/', name: 'home')]
 	public function index(Request $request, QuoteGenerator $quoteGenerator, SessionInterface $session): Response|RedirectResponse
@@ -29,9 +30,11 @@ class HomeController extends AbstractController
 				$this->addFlash("warning", "L'origine et la destination ne peuvent pas être identiques.");
 				return $this->redirectToRoute('home');
 			}
-			$name = $askedQuote['name'];
-			$phoneNumber = $askedQuote['phoneNumber'];
-			$session->set('clientDetails', compact('name', 'phoneNumber'));
+			$prospect = new Prospect();
+			$prospect->setName($askedQuote['name'])
+				->setEmail($askedQuote['email'])
+				->setPhoneNumber($askedQuote['phoneNumber']);
+			$session->set('prospect', $prospect);
 			return $this->render('quote.html.twig', [
 				'quote' => $quoteGenerator->generate(
 					$askedQuote['originPlaceId'],
@@ -57,5 +60,11 @@ class HomeController extends AbstractController
 	{
 		$data = json_decode($request->getContent(), true);
 		return new JsonResponse(['res' => $payment->capture($data['orderID'])]);
+	}
+	
+	#[Route('/confirmation', name: 'confirm.payment')]
+	public function confirmPayment(): Response
+	{
+		return $this->render('confirmation.html.twig');
 	}
 }
