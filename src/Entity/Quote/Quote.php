@@ -7,35 +7,45 @@ class Quote
 	/**
 	 * @var string
 	 */
-	private $originAddress;
+	private string $originAddress;
 	/**
 	 * @var string
 	 */
-	private $originLatitude;
+	private string $originLatitude;
 	/**
 	 * @var string
 	 */
-	private $originLongitude;
+	private string $originLongitude;
 	/**
 	 * @var string
 	 */
-	private $destinationAddress;
+	private string $destinationAddress;
 	/**
 	 * @var string
 	 */
-	private $destinationLatitude;
+	private string $destinationLatitude;
 	/**
 	 * @var string
 	 */
-	private $destinationLongitude;
+	private string $destinationLongitude;
 	/**
 	 * @var int
 	 */
-	private $travelDistanceInKms;
+	private int $travelDistanceInKms;
 	/**
 	 * @var string
 	 */
-	private $formattedTravelTime;
+	private string $formattedTravelTime;
+	
+	/**
+	 * @var float
+	 */
+	private float $price;
+	
+	/**
+	 * @var int
+	 */
+	private int $departureTimestamp;
 	
 	/**
 	 * @return string
@@ -207,8 +217,23 @@ class Quote
 		$this->price = $price;
 		return $this;
 	}
+	
 	/**
-	 * @var float
+	 * @return int
 	 */
-	private $price;
+	public function getDepartureTimestamp(): int
+	{
+		return $this->departureTimestamp;
+	}
+	
+	/**
+	 * @param int $departureTimestamp
+	 *
+	 * @return Quote
+	 */
+	public function setDepartureTimestamp(int $departureTimestamp): Quote
+	{
+		$this->departureTimestamp = $departureTimestamp;
+		return $this;
+	}
 }

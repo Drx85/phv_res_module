@@ -5,13 +5,18 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Demande de devis</h1>
-	{% for message in app.flashes('warning') %}
-		<div class="alert alert-warning">
-			{{ message }}
+	<h1 class="my-4 ms-3">Demande de devis</h1>
+	<div class="row ms-2">
+		<div class="col-xxl-3 col-xl-4 col-md-5">
+			{% for message in app.flashes('warning') %}
+				<div class="alert alert-danger">
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% form_theme form 'bootstrap_5_layout.html.twig' %}
+			{{ form(form) }}
 		</div>
-	{% endfor %}
-	{{ form(form) }}
+	</div>
 {% endblock %}
 
 {% block javascripts %}

@@ -12,6 +12,7 @@
 	<p>{{ quote.destinationAddress }}</p>
 	<h3>Devis</h3>
 	<ul>
+		<li>Date et heure de départ : Le {{ quote.departureTimestamp | format_datetime('long', 'short', locale='fr', timezone="Europe/Paris") }}</li>
 		<li>Distance : {{ quote.travelDistanceInKms }} km(s)</li>
 		<li>Temps de trajet estimé : {{ quote.formattedTravelTime }}</li>
 		<li><strong>Prix</strong> : {{ quote.price }} euros net TTC</li>

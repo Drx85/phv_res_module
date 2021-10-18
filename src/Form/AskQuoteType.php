@@ -3,13 +3,16 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotEqualTo;
 
 class AskQuoteType extends AbstractType
 {
@@ -25,7 +28,17 @@ class AskQuoteType extends AbstractType
 				'label' => "Adresse d'arrivée",
 				'constraints' => new NotBlank()
 			])
-			->add('destinationPlaceId', HiddenType::class, [])
+			->add('departureDateTime', DateTimeType::class, [
+				'label' => 'Date et heure de départ',
+				'widget' => 'single_text',
+				'input' => 'timestamp',
+				'view_timezone' => 'Europe/Paris',
+				'constraints' => new GreaterThan(time(), null, "Le moment du départ ne peut pas être passé.")
+			])
+			->add('destinationPlaceId', HiddenType::class, [
+				'constraints' => new NotEqualTo(['propertyPath' => 'parent.all[originPlaceId].data'
+				], null, "L'origine et la destination ne peuvent pas être identiques.")
+			])
 			->add('name', TextType::class, [
 				'label' => 'Nom et prénom',
 				'constraints' => new NotBlank()

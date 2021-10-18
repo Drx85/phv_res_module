@@ -25,7 +25,9 @@
         "symfony/routing": "5.3.*",
         "symfony/runtime": "5.3.*",
         "symfony/validator": "5.3.*",
-        "symfony/yaml": "5.3.*"
+        "symfony/yaml": "5.3.*",
+        "twig/extra-bundle": "^3.3",
+        "twig/intl-extra": "^3.3"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.34",

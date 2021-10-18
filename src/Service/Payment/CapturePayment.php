@@ -52,6 +52,7 @@ class CapturePayment
 			->setTravelDistanceInKm($quote->getTravelDistanceInKms())
 			->setFormattedTravelTime($quote->getFormattedTravelTime())
 			->setPrice($quote->getPrice())
+			->setDepartureTimestamp($quote->getDepartureTimestamp())
 			->setClientName($client->getName())
 			->setClientEmail($client->getEmail())
 			->setClientPhoneNumber($client->getPhoneNumber())

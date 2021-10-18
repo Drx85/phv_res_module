@@ -26,10 +26,6 @@ class DefaultController extends AbstractController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$askedQuote = $form->getData();
-			if ($askedQuote['originPlaceId'] === $askedQuote['destinationPlaceId']) {
-				$this->addFlash("warning", "L'origine et la destination ne peuvent pas être identiques.");
-				return $this->redirectToRoute('home');
-			}
 			$prospect = new Prospect();
 			$prospect->setName($askedQuote['name'])
 				->setEmail($askedQuote['email'])
@@ -39,6 +35,7 @@ class DefaultController extends AbstractController
 				'quote' => $quoteGenerator->generate(
 					$askedQuote['originPlaceId'],
 					$askedQuote['destinationPlaceId'],
+					$askedQuote['departureDateTime'],
 					$this->getParameter('app.google_key')
 				)
 			]);

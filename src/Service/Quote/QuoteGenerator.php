@@ -37,14 +37,14 @@ class QuoteGenerator
 	 *
 	 * @return Quote
 	 */
-	public function generate(string $origin, string $destination, string $googleApiKey): Quote
+	public function generate(string $origin, string $destination, int $departureTimestamp, string $googleApiKey): Quote
 	{
-		$quote = $this->createQuote($this->callGoogleApi($origin, $destination, $googleApiKey));
+		$quote = $this->createQuote($this->callGoogleApi($origin, $destination, $departureTimestamp, $googleApiKey));
 		$this->session->set('quote', $quote);
 		return $quote;
 	}
 	
-	private function callGoogleApi(string $origin, string $destination, string $googleApiKey): array
+	private function callGoogleApi(string $origin, string $destination, int $departureTimestamp, string $googleApiKey): array
 	{
 		$apiReponse = $this->client->request(
 			'GET',
@@ -52,12 +52,15 @@ class QuoteGenerator
 				'query' => [
 					'origin'      => 'place_id:' . $origin,
 					'destination' => 'place_id:' . $destination,
+					'departure_time' => $departureTimestamp,
 					'key'         => $googleApiKey
 				]
 			]
 		);
 		//		$statusCode = $apiResponse->getStatusCode();
-		return $apiReponse->toArray();
+		$apiResponse = $apiReponse->toArray();
+		$apiResponse['departureTimestamp'] = $departureTimestamp;
+		return $apiResponse;
 	}
 	
 	/**
@@ -68,7 +71,7 @@ class QuoteGenerator
 	private function createQuote(array $apiResponse): Quote
 	{
 		$travelDistanceInKm = $apiResponse['routes']['0']['legs']['0']['distance']['text'];
-		$timeInMinutes = ceil($apiResponse['routes']['0']['legs']['0']['duration']['value'] / 60);
+		$timeInMinutes = ceil($apiResponse['routes']['0']['legs']['0']['duration_in_traffic']['value'] / 60);
 		$formattedTime = $this->convertMinutesToFormattedHours($timeInMinutes);
 		$price = $this->calculatePrice((int)$travelDistanceInKm, (int)$timeInMinutes);
 		$quote = new Quote();
@@ -80,7 +83,8 @@ class QuoteGenerator
 			->setDestinationLongitude($apiResponse['routes']['0']['legs']['0']['start_location']['lng'])
 			->setTravelDistanceInKms((int)$travelDistanceInKm)
 			->setFormattedTravelTime($formattedTime)
-			->setPrice($price);
+			->setPrice($price)
+			->setDepartureTimestamp($apiResponse['departureTimestamp']);
 	}
 	
 	/**

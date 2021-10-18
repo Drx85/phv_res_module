@@ -41,6 +41,9 @@ class Order
 	#[ORM\Column(type: 'string')]
 	private string $paypalOrderId;
 	
+	#[ORM\Column(type: 'integer')]
+	private int $departureTimestamp;
+	
 	public function getId(): ?int
 	{
 		return $this->id;
@@ -144,4 +147,16 @@ class Order
 		$this->paypalOrderId = $paypalOrderId;
 		return $this;
 	}
+	
+	public function getDepartureTimestamp(): int
+	{
+		return $this->departureTimestamp;
+	}
+
+	public function setDepartureTimestamp(int $departureTimestamp): Order
+	{
+		$this->departureTimestamp = $departureTimestamp;
+		return $this;
+	}
+	
 }
