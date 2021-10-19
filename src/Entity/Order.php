@@ -137,11 +137,6 @@ class Order
 		return $this;
 	}
 
-	public function getPaypalOrderId(): string
-	{
-		return $this->paypalOrderId;
-	}
-
 	public function setPaypalOrderId($paypalOrderId): self
 	{
 		$this->paypalOrderId = $paypalOrderId;

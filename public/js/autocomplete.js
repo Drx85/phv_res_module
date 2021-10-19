@@ -15,7 +15,6 @@ function initAutocomplete() {
 			document.getElementById("ask_quote_originPlaceId").value = originPlace.place_id;
 		}
 	});
-	
 	destination = new google.maps.places.Autocomplete(
 		document.getElementById("ask_quote_destination"),
 		{

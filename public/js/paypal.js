@@ -27,7 +27,7 @@ window.onload = () => {
 				return res.json();
 			}).then(function(details) {
 				if (details.res.statusCode !== 201) {
-					alert('Le paiement a échoué. Veuillez réessayer.')
+					alert("Le paiement a échoué. Veuillez réessayer.");
 					return actions.restart();
 				}
 				window.location.replace("/confirmation");
