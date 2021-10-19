@@ -33,15 +33,24 @@ class CapturePayment
 	 */
 	public function capture(string $orderId): HttpResponse
 	{
-		$request = new OrdersCaptureRequest($orderId);
-		$client = $this->client->getClient();
-		$response = $client->execute($request);
-		$this->createOrder($response->result->id);
-		//TODO: Send confirmation email to the client with reservation reference
-		//TODO: Send email to the PHV driver with reservation details
-		return $response;
+		try {
+			$request = new OrdersCaptureRequest($orderId);
+			$client = $this->client->getClient();
+			$response = $client->execute($request);
+			$this->createOrder($response->result->id);
+			//TODO: Send confirmation email to the client with reservation reference
+			//TODO: Send email to the PHV driver with reservation details
+			return $response;
+		} catch (\Exception $exc) {
+			return new HttpResponse($exc->getCode(), $exc->getMessage(), $request->headers);
+		}
 	}
 	
+	/**
+	 * Create final Order entity and save it in Database
+	 *
+	 * @param string $orderId
+	 */
 	private function createOrder(string $orderId): void
 	{
 		/** @var Quote $quote */$quote = $this->session->get('quote');

@@ -14,7 +14,7 @@ window.onload = () => {
 			});
 		},
 		// Finalize the transaction after payer approval
-		onApprove: function(data) {
+		onApprove: function(data, actions) {
 			return fetch("/capture-paypal-transaction", {
 				method: "post",
 				headers: {
@@ -26,6 +26,10 @@ window.onload = () => {
 			}).then(function(res) {
 				return res.json();
 			}).then(function(details) {
+				if (details.res.statusCode !== 201) {
+					alert('Le paiement a échoué. Veuillez réessayer.')
+					return actions.restart();
+				}
 				window.location.replace("/confirmation");
 			});
 		}

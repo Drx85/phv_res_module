@@ -3,7 +3,14 @@
 namespace App\Service\Quote;
 
 use App\Entity\Quote\Quote;
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class QuoteGenerator
@@ -31,8 +38,11 @@ class QuoteGenerator
 	}
 	
 	/**
+	 * Call Google API, then create the quote from its response and save it in session.
+	 *
 	 * @param string $origin
 	 * @param string $destination
+	 * @param int    $departureTimestamp
 	 * @param string $googleApiKey
 	 *
 	 * @return Quote
@@ -44,8 +54,22 @@ class QuoteGenerator
 		return $quote;
 	}
 	
+	/**
+	 * @param string $origin
+	 * @param string $destination
+	 * @param int    $departureTimestamp
+	 * @param string $googleApiKey
+	 *
+	 * @return array
+	 * @throws ClientExceptionInterface
+	 * @throws DecodingExceptionInterface
+	 * @throws RedirectionExceptionInterface
+	 * @throws ServerExceptionInterface
+	 * @throws TransportExceptionInterface
+	 */
 	private function callGoogleApi(string $origin, string $destination, int $departureTimestamp, string $googleApiKey): array
 	{
+		try {
 		$apiReponse = $this->client->request(
 			'GET',
 			'https://maps.googleapis.com/maps/api/directions/json', [
@@ -57,10 +81,12 @@ class QuoteGenerator
 				]
 			]
 		);
-		//		$statusCode = $apiResponse->getStatusCode();
 		$apiResponse = $apiReponse->toArray();
 		$apiResponse['departureTimestamp'] = $departureTimestamp;
 		return $apiResponse;
+		} catch (\Exception) {
+			throw new HttpException(500, "Erreur lors de l'appel aux services Google.");
+		}
 	}
 	
 	/**
