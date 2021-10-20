@@ -5,22 +5,74 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Devis</h1>
-	<h3>Origine</h3>
-	<p>{{ quote.originAddress }}</p>
-	<h3>Destination</h3>
-	<p>{{ quote.destinationAddress }}</p>
-	<h3>Devis</h3>
-	<ul>
-		<li>Date et heure de départ : Le {{ quote.departureTimestamp | format_datetime('long', 'short', locale='fr', timezone="Europe/Paris") }}</li>
-		<li>Distance : {{ quote.travelDistanceInKms }} km(s)</li>
-		<li>Temps de trajet estimé : {{ quote.formattedTravelTime }}</li>
-		<li><strong>Prix</strong> : {{ quote.price }} euros net TTC</li>
-	</ul>
-	<div id="paypal-button-container"></div>
+	<div class="max-w-7xl mt-8 mx-8 lg">
+		<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+			<div class="px-4 py-5 sm:px-6">
+				<h3 class="text-lg leading-6 font-medium text-gray-900">
+					Devis
+				</h3>
+				<p class="mt-1 max-w-2xl text-sm text-gray-500">
+					Tarifs nets TTC.
+				</p>
+			</div>
+			<div class="border-t border-gray-200">
+				<dl>
+					<div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+						<dt class="text-sm font-medium text-gray-500">
+							Adresse de départ
+						</dt>
+						<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+							{{ quote.originAddress }}
+						</dd>
+					</div>
+					<div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+						<dt class="text-sm font-medium text-gray-500">
+							Adresse d'arrivée
+						</dt>
+						<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+							{{ quote.destinationAddress }}
+						</dd>
+					</div>
+					<div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+						<dt class="text-sm font-medium text-gray-500">
+							Date et heure de départ
+						</dt>
+						<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+							Le {{ quote.departureTimestamp | format_datetime('long', 'short', locale='fr', timezone="Europe/Paris") }}
+						</dd>
+					</div>
+					<div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+						<dt class="text-sm font-medium text-gray-500">
+							Distance
+						</dt>
+						<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+							{{ quote.travelDistanceInKms }} km(s)
+						</dd>
+					</div>
+					<div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+						<dt class="text-sm font-medium text-gray-500">
+							Temps de trajet estimé
+						</dt>
+						<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+							{{ quote.formattedTravelTime }}
+						</dd>
+					</div>
+					<div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+						<dt class="text-sm font-medium text-gray-500">
+							Tarif final
+						</dt>
+						<dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+							{{ quote.price | format_number({fraction_digit: 2}, locale="fr") }} € net TTC
+						</dd>
+					</div>
+				</dl>
+			</div>
+		</div>
+		<div id="paypal-button-container" class="mt-6"></div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}
-	<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_id }}&currency=EUR" data-sdk-integration-source="button-factory"></script>
 	<script src="{{ asset('js/paypal.js') }}"></script>
+	<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_id }}&currency=EUR" data-sdk-integration-source="button-factory"></script>
 {% endblock %}

@@ -3,6 +3,10 @@ twig:
     globals:
         google_key: '%env(GOOGLE_KEY)%'
         paypal_id: '%env(PAYPAL_ID)%'
+        minimum_order_price: '%env(MINIMUM_ORDER_PRICE)%'
+        price_of_care: '%env(PRICE_OF_CARE)%'
+        price_per_km: '%env(PRICE_PER_KM)%'
+        price_per_minute: '%env(PRICE_PER_MINUTE)%'
 
 when@test:
     twig:
