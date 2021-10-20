@@ -62,58 +62,13 @@
 				</div>
 			</div>
 			<div class="mt-5 md:mt-0 md:col-span-2 mr-0 sm:mr-6">
-					<div class="shadow overflow-hidden sm:rounded-md">
-						<div class="px-4 py-5 bg-white sm:p-6">
-							<h3 class="text-lg font-medium mb-5 text-gray-900">Formulaire à remplir</h3>
-							<div class="grid grid-cols-1 lg:grid-cols-3">
-								{% form_theme form 'tailwind_2_layout.html.twig' %}
-								{{ form_start(form) }}
-								<div class="col-span-6 sm:col-span-3">
-									<div class="col col-md-4">{{ form_row(form.origin, {
-											label_class: "block text-sm font-medium text-gray-700",
-											widget_class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-										}) }}</div>
-								</div>
-								<div class="col-span-6 sm:col-span-3">
-									<div class="col col-md-4">{{ form_row(form.destination, {
-											label_class: "block text-sm font-medium text-gray-700",
-											widget_class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-										}) }}</div>
-								</div>
-								<div class="col-span-6 sm:col-span-3">
-									<div class="col col-md-4">{{ form_row(form.departureDateTime, {
-											label_class: "block text-sm font-medium text-gray-700",
-											widget_class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-										}) }}</div>
-								</div>
-								<div class="col-span-6 sm:col-span-3">
-									<div class="col col-md-4">{{ form_row(form.name, {
-											label_class: "block text-sm font-medium text-gray-700",
-											widget_class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-										}) }}</div>
-								</div>
-								<div class="col-span-6 sm:col-span-3">
-									<div class="col col-md-4">{{ form_row(form.email, {
-											label_class: "block text-sm font-medium text-gray-700",
-											widget_class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-										}) }}</div>
-								</div>
-								<div class="col-span-6 sm:col-span-3">
-									<div class="col col-md-4">{{ form_row(form.phoneNumber, {
-											label_class: "block text-sm font-medium text-gray-700",
-											widget_class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-										}) }}</div>
-								</div>
-								{{ form_rest(form) }}
-							</div>
-							<div class="px-4 py-3 text-right sm:px-6">
-								<button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-									Suivant
-								</button>
-							</div>
-							{{ form_end(form) }}
-						</div>
+				<div class="shadow overflow-hidden sm:rounded-md">
+					<div class="px-4 py-5 bg-white sm:p-6">
+						<h3 class="text-lg font-medium mb-5 text-gray-900">Formulaire à remplir</h3>
+						<div class="grid grid-cols-1 lg:grid-cols-3">
+						{{ include('_form.html.twig') }}
 					</div>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -1,5 +1,6 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    form_themes: ['form/custom_template.html.twig']
     globals:
         google_key: '%env(GOOGLE_KEY)%'
         paypal_id: '%env(PAYPAL_ID)%'

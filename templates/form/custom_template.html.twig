@@ -1,0 +1,46 @@
+{% use 'tailwind_2_layout.html.twig' %}
+
+{% block form_widget %}
+	{% set widget_class = widget_class|default('appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+	placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm') %}
+	{{ parent() }}
+{% endblock form_widget %}
+
+{% block email_widget %}
+	{% set widget_class = widget_class|default('appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+	placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm') %}
+	{{ parent() }}
+{% endblock email_widget %}
+
+{% block tel_widget %}
+	{% set widget_class = widget_class|default('appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+	placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm') %}
+	{{ parent() }}
+{% endblock tel_widget %}
+
+{% block datetime_widget %}
+	{% set widget_class = widget_class|default('appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+	placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm') %}
+	{{ parent() }}
+{% endblock datetime_widget %}
+
+{% block form_label %}
+	{% set label_class = label_class|default('block text-sm font-medium text-gray-700') %}
+	{{ parent() }}
+{% endblock form_label %}
+
+{% block form_errors %}
+	{% if errors|length > 0 %}
+		{% if compound %}
+			<ul>
+				{% for error in errors %}
+					<li class="text-sm text-red-600 mb-2" >{{ error.message }}</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			{% for error in errors %}
+					<p class="text-sm mt-2 mb-1 text-red-600">{{ error.message }}</p>
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+{% endblock form_errors %}
