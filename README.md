@@ -13,7 +13,7 @@ Your comments and suggestions are welcome.
 *   🐬  MySQL 5.7.31
 *   ✒️Apache 2.4.46
 *   ⛕️Git 2.31.1.windows.1
-*   🌿 Twig 3<p>&nbsp;</p>
+*   🌿 Twig 3
 
 ### Code quality
 
@@ -31,7 +31,7 @@ To get a copy up and running follow these simple steps.
 
 *   PHP > 8.0.9
 *   Hosting provider or XAMPP/WAMP for local use
-*   MySQL DMBS like phpMyAdmin : https://docs.phpmyadmin.net/fr/latest/setup.html
+*   MySQL DMBS like [phpMyAdmin](https://docs.phpmyadmin.net/fr/latest/setup.html)
 
 ### Framework and libraries
 
@@ -41,8 +41,7 @@ To get a copy up and running follow these simple steps.
 
 ### APIs
 
-*   Google API : You will need an API key : Register on [Google Maps Platform](https://mapsplatform.google.com/) (you can have a free period). Then, follow [these steps](https://developers.google.com/maps/gmp-get-started?hl=fr#api-key) to get your own key.  
-    You will have to activate these APIs : Directions API, Maps Javascript API, Places API.
+*   Google API : You will need an API key : Register on [Google Maps Platform](https://mapsplatform.google.com/) (you can have a free period). Then, follow [these steps](https://developers.google.com/maps/gmp-get-started?hl=fr#api-key) to get your own key. You will have to activate these APIs : Directions API, Maps Javascript API, Places API.
 *   Paypal API : Follow [these steps](https://developer.paypal.com/docs/api/overview/) to get your credentials (Client ID & Client Secret). To simulate the payment, you can use [Sandbox accounts](https://developer.paypal.com/developer/accounts/).
 
 ### INSTALLATION
@@ -87,6 +86,11 @@ php bin/console doctrine:migrations:migrate
 ```sh
 symfony s:start
 ```
+## Usage
+
+### Online example version
+
+Please see an hosted example version here : [https://deperne.fr/phv_res_module/public/](https://deperne.fr/phv_res_module/public/)
 
 ## Contact
 

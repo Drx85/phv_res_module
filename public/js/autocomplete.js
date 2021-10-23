@@ -18,7 +18,7 @@ function initAutocomplete() {
 	destination = new google.maps.places.Autocomplete(
 		document.getElementById("ask_quote_destination"),
 		{
-			componentRestrictions: {"country": ['FR']},
+			componentRestrictions: {"country": ["FR"]},
 			fields: ["place_id", "geometry", "name"]
 		}
 	);
