@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotEqualTo;
@@ -34,7 +35,7 @@ class AskQuoteType extends AbstractType
 				'widget' => 'single_text',
 				'input' => 'timestamp',
 				'view_timezone' => 'Europe/Paris',
-				'constraints' => new GreaterThan(time(), null, "Le moment du départ ne peut pas être passé.")
+				'constraints' => [new GreaterThan(time(), null, "Le moment du départ ne peut pas être passé."), new NotBlank()]
 			])
 			->add('destinationPlaceId', HiddenType::class, [
 				'constraints' => [
@@ -45,12 +46,17 @@ class AskQuoteType extends AbstractType
 			->add('name', TextType::class, [
 				'constraints' => new NotBlank()
 			])
-			->add('email', EmailType::class, [])
+			->add('email', EmailType::class, [
+				'constraints' => [new NotBlank(), new Email()]
+			])
 			->add('phoneNumber', TelType::class, [
-				'constraints' => new Regex([
-					'pattern' => '^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$^',
-				])
-			]);
+				'constraints' => [
+					new Regex([
+						'pattern' => '^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$^',
+						]),
+					new NotBlank()]
+			])
+			->add('validate', SubmitType::class);
 	}
 	
 	public function configureOptions(OptionsResolver $resolver)
