@@ -2,43 +2,38 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\Quote\Quote;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverKeys;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Panther\PantherTestCase;
 
-class DefaultControllerTest extends WebTestCase
+class DefaultControllerTest extends PantherTestCase
 {
-	protected KernelBrowser $client;
-
-	
-	public function setUp(): void
-	{
-		$this->client = static::createClient();
-	}
-	
 	public function testDisplayIndex()
 	{
-		$this->client->request('GET', '/');
+		$client = static::createClient();
+		$client->request('GET', '/');
 		$this->assertResponseStatusCodeSame(Response::HTTP_OK);
 		$this->assertSelectorTextContains('h3', "Demande de devis");
 	}
 	
-/*	Should be END-TO-END tested
-	public function testCreatePayment()
+	public function testEndToEndAskQuote()
 	{
-		$quote = (new Quote())
-		->setOriginLongitude('2.35059442767782')
-		->setOriginLatitude('48.868227997121956')
-		->setDestinationLatitude('48.8702804295734')
-		->setDestinationLongitude('2.3294947231886405')
-		->setTravelDistanceInKms(2)
-		->setOriginAddress('12 Rue d\'Alexandrie, 75002 Paris, France')
-		->setDestinationAddress('14 Bd des Capucines, 75009 Paris, France')
-		->setFormattedTravelTime('11 minutes')
-		->setPrice(20)
-		->setDepartureTimestamp(1634830920);
-		$this->client->getContainer()->get('session')->set('quote', $quote);
-		$this->client->request('GET', '/create-paypal-transaction');
-	}*/
+		$client = static::createPantherClient();
+		$client->request('GET', '/');
+		$client->getWebDriver()->findElement(WebDriverBy::name('ask_quote[origin]'))->sendKeys('12 rue');
+		usleep(400000);
+		$client->getWebDriver()->findElement(WebDriverBy::name('ask_quote[origin]'))->sendKeys(WebDriverKeys::ARROW_DOWN)->sendKeys(WebDriverKeys::ENTER);
+		$client->getWebDriver()->findElement(WebDriverBy::name('ask_quote[destination]'))->sendKeys('14 rue');
+		usleep(400000);
+		$client->getWebDriver()->findElement(WebDriverBy::name('ask_quote[destination]'))->sendKeys(WebDriverKeys::ARROW_DOWN)->sendKeys(WebDriverKeys::ENTER);
+		$client->getWebDriver()->findElement(WebDriverBy::name('ask_quote[departureDateTime]'))->sendKeys('26100021210000');
+		$client->getWebDriver()->findElement(WebDriverBy::name('ask_quote[name]'))->sendKeys('test');
+		$client->getWebDriver()->findElement(WebDriverBy::name('ask_quote[email]'))->sendKeys('test@test.fr');
+		$client->getWebDriver()->findElement(WebDriverBy::name('ask_quote[phoneNumber]'))->sendKeys('0164101258');
+		$client->getWebDriver()->findElement(WebDriverBy::name('ask_quote[validate]'))->click();
+		$client->waitFor('/html/body/div[1]/div[1]/div[1]/h3', 1);
+		$this->assertSelectorNotExists('.text-red-600');
+		$this->assertSelectorTextContains('h3', "Devis");
+	}
 }
