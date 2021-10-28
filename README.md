@@ -92,6 +92,16 @@ symfony s:start
 
 Please see an hosted example version here : [https://deperne.fr/phv_res_module/public/](https://deperne.fr/phv_res_module/public/)
 
+## Tests
+
+To run tests follow these simple steps.
+1.  Connect on your Paypal Developer account to get credentials of a Sandbox account (must be of "personal" type, so he can be a buyer.)
+2.  Open ***.env.test.example*** file, then type Sandbox account credentials fields with your own information, and rename it ***.env.test***
+3.  Run :
+```sh
+php bin/phpunit
+```
+
 ## Contact
 
 Cédric Deperne - [cedric@deperne.fr](mailto:cedric@deperne.fr)
