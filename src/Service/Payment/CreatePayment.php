@@ -8,12 +8,10 @@ use PayPalHttp\HttpResponse;
 
 class CreatePayment
 {
-	private PayPalClient $client;
-	
-	public function __construct(PayPalClient $client)
+	public function __construct(private PayPalClient $client)
 	{
-		$this->client = $client;
 	}
+	
 	/**
 	 *This is the sample function to create an order. It uses the
 	 *JSON body returned by buildRequestBody() to create an order.
@@ -25,6 +23,7 @@ class CreatePayment
 		$request->body = self::buildRequestBody($amount);
 		// Call PayPal to set up a transaction
 		$client = $this->client->getClient();
+		
 		return $client->execute($request);
 	}
 	

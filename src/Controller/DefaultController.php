@@ -35,11 +35,10 @@ class DefaultController extends AbstractController
 				'quote' => $quoteGenerator->generate(
 					$askedQuote['originPlaceId'],
 					$askedQuote['destinationPlaceId'],
-					$askedQuote['departureDateTime'],
-					$this->getParameter('app.google_key')
-				)
+					$askedQuote['departureDateTime']				)
 			]);
 		}
+		
 		return $this->renderForm('home.html.twig', [
 			'form' => $form,
 		]);
@@ -49,6 +48,7 @@ class DefaultController extends AbstractController
 	public function renderPayment(CreatePayment $payment, SessionInterface $session): JsonResponse
 	{
 		$quote = $session->get('quote');
+		
 		return new JsonResponse(['res' => $payment->create($quote->getPrice())]);
 	}
 	
@@ -56,6 +56,7 @@ class DefaultController extends AbstractController
 	public function capturePayment(CapturePayment $payment, Request $request): JsonResponse
 	{
 		$data = json_decode($request->getContent(), true);
+		
 		return new JsonResponse(['res' => $payment->capture($data['orderID'])]);
 	}
 	

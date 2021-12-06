@@ -3,8 +3,7 @@
 namespace App\Service\Quote;
 
 use App\Entity\Quote\Quote;
-use Symfony\Component\HttpClient\Exception\ClientException;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -15,26 +14,15 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class QuoteGenerator
 {
-	private int $minimumOrderPrice;
-	private int $priceOfCare;
-	private float $pricePerKm;
-	private float $pricePerMinute;
-	private SessionInterface $session;
-	private HttpClientInterface $client;
-	
-	public function __construct(int                 $minimumOrderPrice,
-								int                 $priceOfCare,
-								float               $pricePerKm,
-								float               $pricePerMinute,
-								SessionInterface    $session,
-								HttpClientInterface $client)
-	{
-		$this->minimumOrderPrice = $minimumOrderPrice;
-		$this->priceOfCare = $priceOfCare;
-		$this->pricePerKm = $pricePerKm;
-		$this->pricePerMinute = $pricePerMinute;
-		$this->session = $session;
-		$this->client = $client;
+	public function __construct(
+								private string 				$googleApiKey,
+								private int                 $minimumOrderPrice,
+								private int                 $priceOfCare,
+								private float               $pricePerKm,
+								private float               $pricePerMinute,
+								private RequestStack		$requestStack,
+								private HttpClientInterface $client
+	) {
 	}
 	
 	/**
@@ -43,14 +31,19 @@ class QuoteGenerator
 	 * @param string $origin
 	 * @param string $destination
 	 * @param int    $departureTimestamp
-	 * @param string $googleApiKey
 	 *
 	 * @return Quote
+	 * @throws ClientExceptionInterface
+	 * @throws DecodingExceptionInterface
+	 * @throws RedirectionExceptionInterface
+	 * @throws ServerExceptionInterface
+	 * @throws TransportExceptionInterface
 	 */
-	public function generate(string $origin, string $destination, int $departureTimestamp, string $googleApiKey): Quote
+	public function generate(string $origin, string $destination, int $departureTimestamp): Quote
 	{
-		$quote = $this->createQuote($this->callGoogleApi($origin, $destination, $departureTimestamp, $googleApiKey));
-		$this->session->set('quote', $quote);
+		$quote = $this->createQuote($this->callGoogleApi($origin, $destination, $departureTimestamp));
+		$this->requestStack->getSession()->set('quote', $quote);
+		
 		return $quote;
 	}
 	
@@ -58,7 +51,6 @@ class QuoteGenerator
 	 * @param string $origin
 	 * @param string $destination
 	 * @param int    $departureTimestamp
-	 * @param string $googleApiKey
 	 *
 	 * @return array
 	 * @throws ClientExceptionInterface
@@ -67,22 +59,23 @@ class QuoteGenerator
 	 * @throws ServerExceptionInterface
 	 * @throws TransportExceptionInterface
 	 */
-	private function callGoogleApi(string $origin, string $destination, int $departureTimestamp, string $googleApiKey): array
+	private function callGoogleApi(string $origin, string $destination, int $departureTimestamp): array
 	{
 		try {
-		$apiReponse = $this->client->request(
+		$apiResponse = $this->client->request(
 			'GET',
 			'https://maps.googleapis.com/maps/api/directions/json', [
 				'query' => [
 					'origin'      => 'place_id:' . $origin,
 					'destination' => 'place_id:' . $destination,
 					'departure_time' => $departureTimestamp,
-					'key'         => $googleApiKey
+					'key'         => $this->googleApiKey
 				]
 			]
 		);
-		$apiResponse = $apiReponse->toArray();
+		$apiResponse = $apiResponse->toArray();
 		$apiResponse['departureTimestamp'] = $departureTimestamp;
+		
 		return $apiResponse;
 		} catch (\Exception) {
 			throw new HttpException(500, "Erreur lors de l'appel aux services Google.");
@@ -101,6 +94,7 @@ class QuoteGenerator
 		$formattedTime = $this->convertMinutesToFormattedHours($timeInMinutes);
 		$price = $this->calculatePrice((int)$travelDistanceInKm, (int)$timeInMinutes);
 		$quote = new Quote();
+		
 		return $quote->setOriginAddress($apiResponse['routes']['0']['legs']['0']['start_address'])
 			->setOriginLatitude($apiResponse['routes']['0']['legs']['0']['start_location']['lat'])
 			->setOriginLongitude($apiResponse['routes']['0']['legs']['0']['start_location']['lng'])
@@ -134,6 +128,7 @@ class QuoteGenerator
 		if ($stringMinutes < 2) $stringMinutes = 'minute';
 		
 		if ($hours == 0) return $minutes . ' ' . $stringMinutes;
+		
 		return $hours . ' ' . $stringHours . ' et ' . $minutes . ' ' . $stringMinutes;
 	}
 	
@@ -147,6 +142,7 @@ class QuoteGenerator
 	{
 		$price = $this->pricePerKm * $travelDistanceInKm + $this->pricePerMinute * $timeInMinutes + $this->priceOfCare;
 		if ($price < $this->minimumOrderPrice) return $this->minimumOrderPrice;
+		
 		return round($price, 2);
 	}
 }

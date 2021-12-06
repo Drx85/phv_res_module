@@ -59,7 +59,7 @@ class AskQuoteType extends AbstractType
 			->add('validate', SubmitType::class);
 	}
 	
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'translation_domain' => 'forms'

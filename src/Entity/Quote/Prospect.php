@@ -24,6 +24,7 @@ class Prospect
 	public function setName(string $name): Prospect
 	{
 		$this->name = $name;
+		
 		return $this;
 	}
 	
@@ -43,6 +44,7 @@ class Prospect
 	public function setEmail(string $email): Prospect
 	{
 		$this->email = $email;
+		
 		return $this;
 	}
 	
@@ -62,6 +64,7 @@ class Prospect
 	public function setPhoneNumber(string $phoneNumber): Prospect
 	{
 		$this->phoneNumber = $phoneNumber;
+		
 		return $this;
 	}
 }

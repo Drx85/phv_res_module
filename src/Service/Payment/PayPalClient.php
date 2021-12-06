@@ -8,13 +8,8 @@ use PayPalCheckoutSdk\Core\SandboxEnvironment;
 class PayPalClient
 
 {
-	private string $paypalId;
-	private string $paypalSecret;
-	
-	public function __construct(string $paypalId, string $paypalSecret)
+	public function __construct(private string $paypalId, private string $paypalSecret)
 	{
-		$this->paypalId = $paypalId;
-		$this->paypalSecret = $paypalSecret;
 	}
 	
 	/**

@@ -12,15 +12,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CapturePayment
 {
-	private PayPalClient $client;
-	private SessionInterface $session;
-	private EntityManagerInterface $manager;
-	
-	public function __construct(PayPalClient $client, SessionInterface $session, EntityManagerInterface $manager)
-	{
-		$this->client = $client;
-		$this->session = $session;
-		$this->manager = $manager;
+	public function __construct(
+		private PayPalClient           $client,
+		private SessionInterface       $session,
+		private EntityManagerInterface $manager
+	) {
 	}
 	
 	/**

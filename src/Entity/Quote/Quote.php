@@ -63,6 +63,7 @@ class Quote
 	public function setOriginAddress(string $originAddress): Quote
 	{
 		$this->originAddress = $originAddress;
+		
 		return $this;
 	}
 	
@@ -82,6 +83,7 @@ class Quote
 	public function setOriginLatitude(string $originLatitude): Quote
 	{
 		$this->originLatitude = $originLatitude;
+		
 		return $this;
 	}
 	
@@ -101,6 +103,7 @@ class Quote
 	public function setOriginLongitude(string $originLongitude): Quote
 	{
 		$this->originLongitude = $originLongitude;
+		
 		return $this;
 	}
 	
@@ -120,6 +123,7 @@ class Quote
 	public function setDestinationAddress(string $destinationAddress): Quote
 	{
 		$this->destinationAddress = $destinationAddress;
+		
 		return $this;
 	}
 	
@@ -139,6 +143,7 @@ class Quote
 	public function setDestinationLatitude(string $destinationLatitude): Quote
 	{
 		$this->destinationLatitude = $destinationLatitude;
+		
 		return $this;
 	}
 	
@@ -158,6 +163,7 @@ class Quote
 	public function setDestinationLongitude(string $destinationLongitude): Quote
 	{
 		$this->destinationLongitude = $destinationLongitude;
+		
 		return $this;
 	}
 	
@@ -177,6 +183,7 @@ class Quote
 	public function setTravelDistanceInKms(int $travelDistanceInKms): Quote
 	{
 		$this->travelDistanceInKms = $travelDistanceInKms;
+		
 		return $this;
 	}
 	
@@ -196,6 +203,7 @@ class Quote
 	public function setFormattedTravelTime(string $formattedTravelTime): Quote
 	{
 		$this->formattedTravelTime = $formattedTravelTime;
+		
 		return $this;
 	}
 	
@@ -215,6 +223,7 @@ class Quote
 	public function setPrice(float $price): Quote
 	{
 		$this->price = $price;
+		
 		return $this;
 	}
 	
@@ -234,6 +243,7 @@ class Quote
 	public function setDepartureTimestamp(int $departureTimestamp): Quote
 	{
 		$this->departureTimestamp = $departureTimestamp;
+		
 		return $this;
 	}
 }

@@ -26,6 +26,7 @@ services:
             - '../src/Tests/'
     App\Service\Quote\QuoteGenerator:
         arguments:
+            $googleApiKey: '%env(GOOGLE_KEY)%'
             $minimumOrderPrice: '%env(MINIMUM_ORDER_PRICE)%'
             $priceOfCare: '%env(PRICE_OF_CARE)%'
             $pricePerKm: '%env(PRICE_PER_KM)%'

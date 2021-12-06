@@ -57,6 +57,7 @@ class Order
 	public function setOriginAddress($originAddress): self
 	{
 		$this->originAddress = $originAddress;
+		
 		return $this;
 	}
 
@@ -68,6 +69,7 @@ class Order
 	public function setDestinationAddress($destinationAddress): self
 	{
 		$this->destinationAddress = $destinationAddress;
+		
 		return $this;
 	}
 
@@ -79,6 +81,7 @@ class Order
 	public function setTravelDistanceInKm($travelDistanceInKm): self
 	{
 		$this->travelDistanceInKm = $travelDistanceInKm;
+		
 		return $this;
 	}
 
@@ -90,6 +93,7 @@ class Order
 	public function setFormattedTravelTime($formattedTravelTime): self
 	{
 		$this->formattedTravelTime = $formattedTravelTime;
+		
 		return $this;
 	}
 
@@ -101,6 +105,7 @@ class Order
 	public function setPrice($price): self
 	{
 		$this->price = $price;
+		
 		return $this;
 	}
 
@@ -112,6 +117,7 @@ class Order
 	public function setClientName($clientName): self
 	{
 		$this->clientName = $clientName;
+		
 		return $this;
 	}
 
@@ -123,6 +129,7 @@ class Order
 	public function setClientEmail($clientEmail): self
 	{
 		$this->clientEmail = $clientEmail;
+		
 		return $this;
 	}
 
@@ -134,12 +141,14 @@ class Order
 	public function setClientPhoneNumber($clientPhoneNumber): self
 	{
 		$this->clientPhoneNumber = $clientPhoneNumber;
+		
 		return $this;
 	}
 
 	public function setPaypalOrderId($paypalOrderId): self
 	{
 		$this->paypalOrderId = $paypalOrderId;
+		
 		return $this;
 	}
 	
@@ -151,6 +160,7 @@ class Order
 	public function setDepartureTimestamp(int $departureTimestamp): Order
 	{
 		$this->departureTimestamp = $departureTimestamp;
+		
 		return $this;
 	}
 	

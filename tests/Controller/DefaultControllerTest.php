@@ -6,7 +6,6 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverKeys;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Panther\PantherTestCase;
-use function Symfony\Component\String\s;
 
 class DefaultControllerTest extends PantherTestCase
 {
@@ -50,7 +49,7 @@ class DefaultControllerTest extends PantherTestCase
 		$driver->findElement(WebDriverBy::id('btnNext'))->click();
 		$buyerPassword = $this->getContainer()->getParameter('app.paypal_buyer_password');
 		$client->waitFor('#password', 2);
-		usleep(700000);
+		usleep(900000);
 		$driver->findElement(WebDriverBy::id('password'))->sendKeys($buyerPassword);
 		$driver->findElement(WebDriverBy::id('btnLogin'))->click();
 		$client->waitFor('#payment-submit-btn', 7);
@@ -62,7 +61,7 @@ class DefaultControllerTest extends PantherTestCase
 		usleep(700000);
 		$driver->findElement(WebDriverBy::id('payment-submit-btn'))->click();
 		$client->switchTo()->window($wHandle[0]);
-		$client->waitFor('.text-4xl', 5);
+		$client->waitFor('.text-4xl', 10);
 		$this->assertSelectorTextContains('div', "Réservation confirmée");
 	}
 }
